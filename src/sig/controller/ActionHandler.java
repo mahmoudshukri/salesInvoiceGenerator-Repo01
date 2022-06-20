@@ -46,72 +46,7 @@ public class ActionHandler extends Component implements ActionListener {
         case "Load File":
             System.out.println("Load File");
             loadFile();
-            JFileChooser Lf1 = new JFileChooser();
-            JFileChooser Lf2 = new JFileChooser();
-            int result1 = Lf1.showOpenDialog(this);
-            int result2 = Lf2.showOpenDialog(this);
-            if (result1 == JFileChooser.APPROVE_OPTION) {
-                File f = Lf1.getSelectedFile();
-                String filepath = f.getPath();
-                String fi = f.getName();
-                //Parsing CSV Data
-                System.out.print(filepath);
 
-                DefaultTableModel csv_data = new DefaultTableModel();
-
-                try {
-
-                    int start = 1;
-                    InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(filepath));
-                    org.apache.commons.csv.CSVParser csvParser = CSVFormat.DEFAULT.parse(inputStreamReader);
-                    for (CSVRecord csvRecord : csvParser) {
-                        if (start == 0) {
-                            start = 1;
-                            csv_data.addColumn(csvRecord.get(0));
-                            csv_data.addColumn(csvRecord.get(1));
-                            csv_data.addColumn(csvRecord.get(2));
-
-                        } else {
-                            Vector row = new Vector();
-                            row.add(csvRecord.get(0));
-                            row.add(csvRecord.get(1));
-                            row.add(csvRecord.get(2));
-                            csv_data.addRow(row);
-                        }
-                    }
-
-                } catch (Exception ex) {
-                    System.out.println("Error in Parsing CSV File");
-                }
-               // headerTable.setModel(csv_data);
-            }
-
-
-                /*
-                if (result2 == JFileChooser.APPROVE_OPTION) {
-                    String path2 = Lf2.getSelectedFile().getPath();
-                    FileInputStream InvoiceLine = null;
-
-                    try {
-                        InvoiceLine = new FileInputStream(path2);
-                        int size = InvoiceLine.available();
-                        byte[] c = new byte[size];
-                        InvoiceLine.read(c);
-                        headerTable.Lf2(new String(c));
-                    } catch (FileNotFoundException f) {
-                        f.printStackTrace();
-                    } catch (IOException x) {
-                        x.printStackTrace();
-                    } finally {
-                        try {
-                            InvoiceHeader.close();
-                        } catch (IOException t) {
-                        }
-                    }
-                }
-            }
-
-                 */
         break;
         
         
@@ -148,6 +83,72 @@ public class ActionHandler extends Component implements ActionListener {
     }
 
     private void loadFile() {
+        JFileChooser Lf1 = new JFileChooser();
+        JFileChooser Lf2 = new JFileChooser();
+        int result1 = Lf1.showOpenDialog(this);
+        int result2 = Lf2.showOpenDialog(this);
+        if (result1 == JFileChooser.APPROVE_OPTION) {
+            File f = Lf1.getSelectedFile();
+            String filepath = f.getPath();
+            String fi = f.getName();
+            //Parsing CSV Data
+            System.out.print(filepath);
+
+            DefaultTableModel csv_data = new DefaultTableModel();
+
+            try {
+
+                int start = 1;
+                InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(filepath));
+                org.apache.commons.csv.CSVParser csvParser = CSVFormat.DEFAULT.parse(inputStreamReader);
+                for (CSVRecord csvRecord : csvParser) {
+                    if (start == 0) {
+                        start = 1;
+                        csv_data.addColumn(csvRecord.get(0));
+                        csv_data.addColumn(csvRecord.get(1));
+                        csv_data.addColumn(csvRecord.get(2));
+
+                    } else {
+                        Vector row = new Vector();
+                        row.add(csvRecord.get(0));
+                        row.add(csvRecord.get(1));
+                        row.add(csvRecord.get(2));
+                        csv_data.addRow(row);
+                    }
+                }
+
+            } catch (Exception ex) {
+                System.out.println("Error in Parsing CSV File");
+            }
+            // headerTable.setModel(csv_data);
+        }
+
+
+                /*
+                if (result2 == JFileChooser.APPROVE_OPTION) {
+                    String path2 = Lf2.getSelectedFile().getPath();
+                    FileInputStream InvoiceLine = null;
+
+                    try {
+                        InvoiceLine = new FileInputStream(path2);
+                        int size = InvoiceLine.available();
+                        byte[] c = new byte[size];
+                        InvoiceLine.read(c);
+                        headerTable.Lf2(new String(c));
+                    } catch (FileNotFoundException f) {
+                        f.printStackTrace();
+                    } catch (IOException x) {
+                        x.printStackTrace();
+                    } finally {
+                        try {
+                            InvoiceHeader.close();
+                        } catch (IOException t) {
+                        }
+                    }
+                }
+            }
+
+                 */
         
     
     }
