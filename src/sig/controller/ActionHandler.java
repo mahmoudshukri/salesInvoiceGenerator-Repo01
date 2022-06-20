@@ -41,6 +41,8 @@ public class ActionHandler extends Component implements ActionListener {
             System.out.println("Delete Item");
             delItem();
             break;
+            
+            
         case "Load File":
             System.out.println("Load File");
             loadFile();
