@@ -13,14 +13,14 @@ public class InvoiceLine {
         this.count = count;
     }
 
-    public InvoiceLine(String item, double price, int Count, int invNum) {
-    }
+//    public InvoiceLine(String item, double price, int Count, int invNum) {
+//    }
 
     public InvoiceLine(int invoice, String name, double price, int Count) {
     }
 
-    public InvoiceLine(String invoice, double price, int count, InvoiceHeader invoiceHeader) {
-    }
+//    public InvoiceLine(String invoice, double price, int count, InvoiceHeader invoiceHeader) {
+//    }
     
     
     
