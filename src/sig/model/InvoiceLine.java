@@ -14,15 +14,12 @@ public class InvoiceLine {
     }
 
     public InvoiceLine(String item, double price, int Count, int invNum) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public InvoiceLine(int invoice, String name, double price, int Count) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public InvoiceLine(String invoice, double price, int count, InvoiceHeader invoiceHeader) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

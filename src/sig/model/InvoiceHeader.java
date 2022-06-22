@@ -18,7 +18,6 @@ public class InvoiceHeader {
     }
 
     public InvoiceHeader(int num, String date, String customername) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     
