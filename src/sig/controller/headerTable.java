@@ -14,11 +14,4 @@ import java.awt.*;
  */
 class headerTable extends Component {
 
-
-    public static void Lf1(String s) {
-    }
-
-    public static void Lf2(String s) {
-
-    }
 }

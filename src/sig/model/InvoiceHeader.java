@@ -3,6 +3,7 @@ package sig.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import sig.model.InvoiceLine;
 
 public class InvoiceHeader {
     private int num;
@@ -10,11 +11,25 @@ public class InvoiceHeader {
     private Date date;
     private ArrayList<InvoiceLine> lines;
 
-    public InvoiceHeader(int num, String customer, Date date) {
+    public InvoiceHeader(int num, String customer, Date date ) {
         this.num = num;
         this.customer = customer;
         this.date = date;
     }
+
+    public InvoiceHeader(int num, String date, String customername) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
+    public double getInvoiceHeaderTotal(){
+        double total=0.0;
+        for(InvoiceLine ivoiceline : getLines()){
+            total += ivoiceline.getLineTotal();
+        }
+        
+        return total;
+        }
 
     public Date getDate() {
         return date;
@@ -41,6 +56,9 @@ public class InvoiceHeader {
     }
 
     public ArrayList<InvoiceLine> getLines() {
+        if (lines == null){
+            lines = new ArrayList<>();
+        }
         return lines;
     }
 
@@ -49,4 +67,15 @@ public class InvoiceHeader {
     }
     
     
+    @Override
+    public String toString() {
+        return "InvoiceHeader{" + "Number=" + num + ", Date=" + date + ", Customer=" + customer + '}';
+    }
+
+    
+    
+
+   public String getAsCSV(){
+       return num + "," + date + "," +customer;
+   }
 }

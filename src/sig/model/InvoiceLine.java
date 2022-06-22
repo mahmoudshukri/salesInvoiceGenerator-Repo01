@@ -5,15 +5,53 @@ public class InvoiceLine {
     private String name;
     private double price;
     private int count;
-
+   
+   
     public InvoiceLine(InvoiceHeader invoice, String name, int count) {
         this.invoice = invoice;
         this.name = name;
         this.count = count;
     }
 
+    public InvoiceLine(String item, double price, int Count, int invNum) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public InvoiceLine(int invoice, String name, double price, int Count) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public InvoiceLine(String invoice, double price, int count, InvoiceHeader invoiceHeader) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public double getLineTotal(){
+       return price*count;
+   }
+    
+    
+    
+    
+    
+
     public int getCount() {
         return count;
+        
+        
+        
+        
+        
     }
 
     public void setCount(int count) {
@@ -43,6 +81,22 @@ public class InvoiceLine {
     public void setPrice(double price) {
         this.price = price;
     }
+    
+    
+
+@Override
+    public String toString() {
+        return "InvoiceLine{" + "Invoice Number=" + invoice.getNum() + ", Item Name" + name + ", Price=" + price + ", Count=" + count + '}';
+    }
+
+  //  public InvoiceHeader getInvoice() {
+  //      return invoice;
+  //  }
+    
+    
+  public String getAsCSV(){
+       return invoice.getNum() + "," + name + "," + price + "," + count;
+   }  
     
     
 }
