@@ -193,7 +193,7 @@ public class ActionHandler extends Component implements ActionListener, ListSele
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(gui, "File Format Not Matching", "Error Message", JOptionPane.ERROR_MESSAGE);
                 }
-                System.out.println("Invoice Lines check Point");
+                System.out.println("Invoice Lines");
             }
 
           gui.setInvoices(invoicesArray);
@@ -204,7 +204,7 @@ public class ActionHandler extends Component implements ActionListener, ListSele
         }
       }
     } catch (HeadlessException | IOException ex) {
-      JOptionPane.showMessageDialog(gui, "Wrong File Format", "Error", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(gui, "File Format Not Matching", "Error Message", JOptionPane.ERROR_MESSAGE);
 
     }
 

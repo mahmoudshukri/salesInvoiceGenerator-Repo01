@@ -32,7 +32,7 @@ public class InvoiceHeader {
 
 
     public ArrayList<InvoiceLine> getLines() {
-        if (lines == null){
+        if (lines == lines){
             lines = new ArrayList<>();
         }
         return lines;
