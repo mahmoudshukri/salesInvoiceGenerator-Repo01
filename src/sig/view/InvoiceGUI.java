@@ -235,23 +235,23 @@ public class InvoiceGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void newItemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newItemBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_newItemBtnActionPerformed
+
+    }
 
     private void loadMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMenuActionPerformed
 
     }//GEN-LAST:event_loadMenuActionPerformed
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_ExitActionPerformed
 
     private void newInvBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newInvBtnActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_newInvBtnActionPerformed
 
     private void saveMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_saveMenuActionPerformed
 
     /**

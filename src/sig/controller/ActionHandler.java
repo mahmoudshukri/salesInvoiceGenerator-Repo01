@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.FileWriter;
 
 public class ActionHandler extends Component implements ActionListener, ListSelectionListener {
-  private InvoiceGUI gui;
+  public InvoiceGUI gui;
 
   public InvoiceGUI getGui() {
     return gui;
@@ -86,7 +86,9 @@ public class ActionHandler extends Component implements ActionListener, ListSele
   }
 @Override
   public void valueChanged(ListSelectionEvent e) {
+
     int selectedIndex = gui.getheaderTable().getSelectedRow();
+
     if (selectedIndex != -1) {
       System.out.println("YOU HAVE SELECTED ROW :" + selectedIndex);
       InvoiceHeader currentInvoiceHeader = gui.getInvoices().get(selectedIndex);
@@ -159,10 +161,10 @@ public class ActionHandler extends Component implements ActionListener, ListSele
             invoicesArray.add(invoiceHeader);
           } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(gui, "File Format Not Matching", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(gui, "File Format Not Matching", "rror Message", JOptionPane.ERROR_MESSAGE);
           }
         }
-        System.out.println("Sales Invoice Check Point");
+        System.out.println("Invoice header Check Point");
 
         result = loadfile.showOpenDialog(gui);
         if (result == JFileChooser.APPROVE_OPTION) {
@@ -170,27 +172,29 @@ public class ActionHandler extends Component implements ActionListener, ListSele
           Path linepath = Paths.get(itemlineFile.getAbsolutePath());
           java.util.List < String > lineLines = Files.readAllLines(linepath);
           System.out.println("Invoice Lines have been Loaded....");
-          for (String lineLine: lineLines) {
-            try {
-              String[] linecomponets = lineLine.split(",");
-              int invoice = Integer.parseInt(linecomponets[0]);
-              String name = linecomponets[1];
-              double price = Double.parseDouble(linecomponets[2]);
-              int Count = Integer.parseInt(linecomponets[3]);
-              InvoiceHeader inv = null;
-              for (InvoiceHeader invoiceHeader: invoicesArray) {
-                if (invoiceHeader.getNum() == invoice) {
-                  inv = invoiceHeader;
-                  break;
+            for (String lineLine : lineLines){
+                try {
+                    String[] components = lineLine.split(",");
+                    int invoiceHeaderNum = Integer.parseInt(components[0]);
+                    String itemNumber = components[1];
+                    double itemPrice = Double.parseDouble(components[2]);
+                    int Count = Integer.parseInt(components[3]);
+                    InvoiceHeader inv = null;
+                    for (InvoiceHeader invoiceheader : invoicesArray){
+                        if (invoiceheader.getNum()== invoiceHeaderNum){
+                            inv = invoiceheader;
+                            break;
+                        }
+                    }
+                    InvoiceLine invoiceline = new InvoiceLine(itemNumber, itemPrice, Count, inv);
+                    assert inv != null;
+                    inv.getLines().add(invoiceline);
+                } catch (Exception ex){
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(gui, "File Format Not Matching", "Error Message", JOptionPane.ERROR_MESSAGE);
                 }
-              }
-              InvoiceLine invoiceLine = new InvoiceLine(invoice, name, price, Count);
-              inv.getLines().add(invoiceLine);
-            } catch (NumberFormatException ex) {
-              JOptionPane.showMessageDialog(gui, "File Format Not Matching", "Error", JOptionPane.ERROR_MESSAGE);
+                System.out.println("Invoice Lines check Point");
             }
-            System.out.println("Item Lines check Point");
-          }
 
           gui.setInvoices(invoicesArray);
           InvoiceHeadersTableModel invoiceHeaderTableModel = new InvoiceHeadersTableModel(invoicesArray);
@@ -226,16 +230,16 @@ public class ActionHandler extends Component implements ActionListener, ListSele
           System.out.println("Save Data Check");
         try{
          JFileChooser fc = new JFileChooser();
-         int result = fc.showSaveDialog(gui);
-         if (result == JFileChooser.APPROVE_OPTION){
+         int result1 = fc.showSaveDialog(gui);
+         if (result1 == JFileChooser.APPROVE_OPTION){
              File headerFile = fc.getSelectedFile();
              FileWriter hfw = new FileWriter(headerFile);
                     hfw.write(invoiceheader1);
                     hfw.flush();
                     hfw.close();
              
-             result = fc.showSaveDialog(gui);
-             if (result == JFileChooser.APPROVE_OPTION){
+             result1 = fc.showSaveDialog(gui);
+             if (result1 == JFileChooser.APPROVE_OPTION){
              File lineFile = fc.getSelectedFile();
                  try (FileWriter lfw = new FileWriter(lineFile)) {
       
@@ -258,7 +262,7 @@ public class ActionHandler extends Component implements ActionListener, ListSele
         invoiceHeaderDialog= null;
         
     }
-  private void createInvoiceLineOK() {
+//  private void createInvoiceLineOK() {
 //    String invoice = InvoiceLineDialog.getNameField().getText();
 //    String CountStr = InvoiceLineDialog.getCountField().getText();
 //    String PriceStr = InvoiceLineDialog.getPriceField().getText();
@@ -271,22 +275,22 @@ public class ActionHandler extends Component implements ActionListener, ListSele
 //     invoiceHeader.getLines().add(invoiceLine);
 //     InvoiceLinesTableModel linesTableModel = (InvoiceLinesTableModel) gui.getInvoiceLinetable().getModel();
 //     linesTableModel.fireTableDataChanged();
-//     
-//     gui.InvoiceHeadersTableModel().fireTableDataChanged();
-//     }  
-        
-        
-    invoiceLineDialog.setVisible(false);
-     invoiceLineDialog.dispose();
-     invoiceLineDialog = null;    
-    }
-  
-  
-   private void createItemLineCancel() {
-     invoiceLineDialog.setVisible(false);
-     invoiceLineDialog.dispose();
-     invoiceLineDialog = null;
-    }
+//
+//     gui.InvoiceHeadersTableModel().notifyAll();
+//     }
+//
+//
+//    invoiceLineDialog.setVisible(false);
+//     invoiceLineDialog.dispose();
+//     invoiceLineDialog = null;
+//    }
+//
+//
+//   private void createItemLineCancel() {
+//     invoiceLineDialog.setVisible(false);
+//     invoiceLineDialog.dispose();
+//     invoiceLineDialog = null;
+//    }
 
   
   

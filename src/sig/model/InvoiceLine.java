@@ -16,7 +16,7 @@ public class InvoiceLine {
 //    public InvoiceLine(String item, double price, int Count, int invNum) {
 //    }
 
-    public InvoiceLine(int invoice, String name, double price, int Count) {
+    public InvoiceLine(String invoice, double name, double price, InvoiceHeader Count) {
     }
 
 //    public InvoiceLine(String invoice, double price, int count, InvoiceHeader invoiceHeader) {

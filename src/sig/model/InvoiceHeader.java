@@ -17,19 +17,26 @@ public class InvoiceHeader {
         this.date = date;
     }
 
-    public InvoiceHeader(int num, String date, String customername) {
+    public InvoiceHeader(int num, String date, String Customer) {
     }
 
     
     public double getInvoiceHeaderTotal(){
         double total=0.0;
-        for(InvoiceLine ivoiceline : getLines()){
-            total += ivoiceline.getLineTotal();
+        for(InvoiceLine invoiceline : getLines()){
+            total += invoiceline.getLineTotal();
         }
         
         return total;
         }
 
+
+    public ArrayList<InvoiceLine> getLines() {
+        if (lines == null){
+            lines = new ArrayList<>();
+        }
+        return lines;
+    }
     public Date getDate() {
         return date;
     }
@@ -54,16 +61,10 @@ public class InvoiceHeader {
         this.customer = customer;
     }
 
-    public ArrayList<InvoiceLine> getLines() {
-        if (lines == null){
-            lines = new ArrayList<>();
-        }
-        return lines;
-    }
 
-    public void setLines(ArrayList<InvoiceLine> lines) {
-        this.lines = lines;
-    }
+//    public void setLines (ArrayList<InvoiceLine> lines) {
+//        this.lines = lines;
+//    }
     
     
     @Override

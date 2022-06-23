@@ -52,15 +52,15 @@ public class InvoiceLineDialog extends JDialog{
         pack();
     }
 
-    public JTextField getNameField() {
+    public  JTextField getNameField() {
         return NameField;
     }
 
-    public JTextField getCountField() {
+    public  JTextField getCountField() {
         return CountField;
     }
 
-    public JTextField getPriceField() {
+    public  JTextField getPriceField() {
         return PriceField;
     }
 
