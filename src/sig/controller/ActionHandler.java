@@ -2,49 +2,40 @@
 package sig.controller;
 
 import sig.view.InvoiceGUI;
-import sig.view.InvoiceHeaderDialog;
-import sig.view.InvoiceLineDialog;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import sig.model.InvoiceHeader;
 import sig.model.InvoiceHeadersTableModel;
 import sig.model.InvoiceLine;
 import sig.model.InvoiceLinesTableModel;
-import java.io.IOException;
-import java.io.FileWriter;
+import sig.view.InvoiceHeaderDialog;
+import sig.view.InvoiceLineDialog;
+
 
 public class ActionHandler extends Component implements ActionListener, ListSelectionListener {
-  public InvoiceGUI gui;
 
-  public InvoiceGUI getGui() {
-    return gui;
-  }
-  private InvoiceLineDialog invoiceLineDialog;
-  public InvoiceLineDialog getLineDialog() {
-    return invoiceLineDialog;
-  }
-  private InvoiceHeaderDialog invoiceHeaderDialog;
-  public InvoiceHeaderDialog getHeaderDialog() {
-    return invoiceHeaderDialog;
-  }
-
-  public void invoiceActionListener(InvoiceGUI gui) {
-    this.gui = gui;
-  }
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    System.out.println("Action Handling Called");
-
+    private InvoiceGUI gui;
+    private InvoiceHeaderDialog invoiceHeaderDialog;
+    private InvoiceLineDialog invoiceLineDialog;
+    
+    public ActionHandler(InvoiceGUI gui){
+        this.gui=gui;
+    } 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      System.out.println("Action Handling Called");
+      
     switch (e.getActionCommand()) {
     case "New Invoice":
       System.out.println("New invoice");
@@ -80,240 +71,223 @@ public class ActionHandler extends Component implements ActionListener, ListSele
     case "Exit":
       Exit();
       break;
+    case "createInvoiceCancel":
+                createInvoiceCancel();
+                break;
+            case "createInvoiceOK":
+                createInvoiceOK();
+                break;
+            case "createLineOK":
+                createLineOK();
+                break;
+            case "createLineCancel":
+                createLineCancel();
+                break;
 
-    }
-
-  }
-@Override
-  public void valueChanged(ListSelectionEvent e) {
-
-    int selectedIndex = gui.getheaderTable().getSelectedRow();
-
-    if (selectedIndex != -1) {
-      System.out.println("YOU HAVE SELECTED ROW :" + selectedIndex);
-      InvoiceHeader currentInvoiceHeader = gui.getInvoices().get(selectedIndex);
-      gui.getnumLabel().setText("" + currentInvoiceHeader.getNum());
-      gui.getdateLabel().setText("" + currentInvoiceHeader.getDate());
-      gui.getcustomerLabel().setText(currentInvoiceHeader.getCustomer());
-      gui.getTotalLabel().setText("" + currentInvoiceHeader.getInvoiceHeaderTotal());
-      InvoiceLinesTableModel invoiceLineTableModel = new InvoiceLinesTableModel(currentInvoiceHeader.getLines());
-      gui.getInvoiceLinetable().setModel(invoiceLineTableModel);
-      invoiceLineTableModel.fireTableDataChanged();
-    }
-
-  }
-  ////////////////////////*****************////////////////////////
-  private void newInv() {
-    invoiceHeaderDialog = new InvoiceHeaderDialog(gui);
-    invoiceHeaderDialog.setVisible(true);
-
-  }
-  ////////////////////////*****************////////////////////////
-  private void delInv() {
-    int selectedRow = gui.getheaderTable().getSelectedRow();
-    if (selectedRow != -1) {
-      gui.getInvoices().remove(selectedRow);
-      gui.getInvoiceHeadersTableModel().fireTableDataChanged();
-    }
-  }
- ////////////////////////////////////////***************add item in invoice line ****************////////////////////////////////////////
-  private void newItem() {
-    invoiceLineDialog = new InvoiceLineDialog(gui);
-    invoiceLineDialog.setVisible(true);
-  }
-  ////////////////////////////////////////***************delete item from invoice line ****************////////////////////////////////////////
-  private void delItem() {
-    int selectedInv = gui.getheaderTable().getSelectedRow();
-    int selectedRow = gui.getInvoiceLinetable().getSelectedRow();
-    if (selectedInv != -1 && selectedRow != -1) {
-      InvoiceHeader invoiceHeader = gui.getInvoices().get(selectedInv);
-      invoiceHeader.getLines().remove(selectedRow);
-      InvoiceLinesTableModel invoiceLinesTableModel = new InvoiceLinesTableModel(invoiceHeader.getLines());
-      gui.getInvoiceLinetable().setModel(invoiceLinesTableModel);
-      invoiceLinesTableModel.fireTableDataChanged();
-      gui.getInvoiceHeadersTableModel().fireTableDataChanged();
-    }
-
-  }
-  ////////////////////////////////////////****************Load FIle Code ****************////////////////////////////////////////
-  private void loadFile() {
-    JFileChooser loadfile = new JFileChooser();
-    try {
-      int result = loadfile.showOpenDialog(gui);
-      if (result == JFileChooser.APPROVE_OPTION) {
-        File invoiceheaderFile = loadfile.getSelectedFile();
-        Path headerpath = Paths.get(invoiceheaderFile.getAbsolutePath());
-        java.util.List < String > headerLines = Files.readAllLines(headerpath);
-        System.out.println("Invoice Header Loaded.... ");
-       
-        
-        
-        
-        ArrayList < InvoiceHeader > invoicesArray = new ArrayList <> ();
-        for (String headerline: headerLines) {
-          try {
-            String[] headercomponets = headerline.split(",");
-            int num = Integer.parseInt(headercomponets[0]);
-            String date = headercomponets[1];
-            String customername = headercomponets[2];
-
-            InvoiceHeader invoiceHeader = new InvoiceHeader (num, date,customername);
-            invoicesArray.add(invoiceHeader);
-          } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(gui, "File Format Not Matching", "rror Message", JOptionPane.ERROR_MESSAGE);
-          }
         }
-        System.out.println("Invoice header Check Point");
+        
+    }
 
-        result = loadfile.showOpenDialog(gui);
-        if (result == JFileChooser.APPROVE_OPTION) {
-          File itemlineFile = loadfile.getSelectedFile();
-          Path linepath = Paths.get(itemlineFile.getAbsolutePath());
-          java.util.List < String > lineLines = Files.readAllLines(linepath);
-          System.out.println("Invoice Lines have been Loaded....");
-            for (String lineLine : lineLines){
-                try {
-                    String[] components = lineLine.split(",");
-                    int invoiceHeaderNum = Integer.parseInt(components[0]);
-                    String itemNumber = components[1];
-                    double itemPrice = Double.parseDouble(components[2]);
-                    int Count = Integer.parseInt(components[3]);
-                    InvoiceHeader inv = null;
-                    for (InvoiceHeader invoiceheader : invoicesArray){
-                        if (invoiceheader.getNum()== invoiceHeaderNum){
-                            inv = invoiceheader;
-                            break;
-                        }
-                    }
-                    InvoiceLine invoiceline = new InvoiceLine(itemNumber, itemPrice, Count, inv);
-                    assert inv != null;
-                    inv.getLines().add(invoiceline);
-                } catch (Exception ex){
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(gui, "File Format Not Matching", "Error Message", JOptionPane.ERROR_MESSAGE);
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+     int selectedIndex = gui.getHeaderTable().getSelectedRow();
+        if (selectedIndex != -1) {
+            System.out.println("You have selected row: " + selectedIndex);
+            InvoiceHeader currentInvoice = gui.getInvoices().get(selectedIndex);
+            gui.getNumLabel().setText("" + currentInvoice.getNum());
+            gui.getDateLabel().setText(currentInvoice.getDate());
+            gui.getCustomerLabel().setText(currentInvoice.getCustomer());
+            gui.getTotalLabel().setText("" + currentInvoice.getInvoiceTotal());
+            InvoiceLinesTableModel linesTableModel = new InvoiceLinesTableModel(currentInvoice.getLines());
+            gui.getLineTable().setModel(linesTableModel);
+            linesTableModel.fireTableDataChanged();
+        }
+    }
+    
+    
+    private void loadFile() {
+        JFileChooser fc = new JFileChooser();
+        try {
+            int result = fc.showOpenDialog(gui);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File headerFile = fc.getSelectedFile();
+                Path headerPath = Paths.get(headerFile.getAbsolutePath());
+                java.util.List<String> headerLines = Files.readAllLines(headerPath);
+                System.out.println("Invoices have been read");
+                // 1,22-11-2020,Ali
+                // 2,13-10-2021,Saleh
+                // 3,09-01-2019,Ibrahim
+                ArrayList<InvoiceHeader> invoicesArray = new ArrayList<>();
+                for (String headerLine : headerLines) {
+                    String[] headerParts = headerLine.split(",");
+                    int invoiceNum = Integer.parseInt(headerParts[0]);
+                    String invoiceDate = headerParts[1];
+                    String customerName = headerParts[2];
+
+                    InvoiceHeader invoice = new InvoiceHeader(invoiceNum, invoiceDate, customerName);
+                    invoicesArray.add(invoice);
                 }
-                System.out.println("Invoice Lines");
+                System.out.println("Check point");
+                result = fc.showOpenDialog(gui);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File lineFile = fc.getSelectedFile();
+                    Path linePath = Paths.get(lineFile.getAbsolutePath());
+                    java.util.List<String> lineLines = Files.readAllLines(linePath);
+                    System.out.println("Lines have been read");
+                    for (String lineLine : lineLines) {
+                        String lineParts[] = lineLine.split(",");
+                        int invoiceNum = Integer.parseInt(lineParts[0]);
+                        String itemName = lineParts[1];
+                        double itemPrice = Double.parseDouble(lineParts[2]);
+                        int count = Integer.parseInt(lineParts[3]);
+                        InvoiceHeader inv = null;
+                        for (InvoiceHeader invoice : invoicesArray) {
+                            if (invoice.getNum() == invoiceNum) {
+                                inv = invoice;
+                                break;
+                            }
+                        }
+
+                        InvoiceLine line = new InvoiceLine(itemName, itemPrice, count, inv);
+                        inv.getLines().add(line);
+                    }
+                    System.out.println("Check point");
+                }
+                gui.setInvoices(invoicesArray);
+                InvoiceHeadersTableModel invoicesTableModel = new InvoiceHeadersTableModel(invoicesArray);
+                gui.setInvoiceHeadersTableModel(invoicesTableModel);
+                gui.getHeaderTable().setModel(invoicesTableModel);
+                gui.getInvoiceHeadersTableModel().fireTableDataChanged();
             }
-
-          gui.setInvoices(invoicesArray);
-          InvoiceHeadersTableModel invoiceHeaderTableModel = new InvoiceHeadersTableModel(invoicesArray);
-          gui.setInvoiceHeadersTableModel(invoiceHeaderTableModel);
-          gui.getheaderTable().setModel(invoiceHeaderTableModel);
-          gui.getInvoiceHeadersTableModel().fireTableDataChanged();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
-      }
-    } catch (HeadlessException | IOException ex) {
-      JOptionPane.showMessageDialog(gui, "File Format Not Matching", "Error Message", JOptionPane.ERROR_MESSAGE);
+    }
+   
+    
+    private void saveFile() {
+         ArrayList<InvoiceHeader> invoices = gui.getInvoices();
+        String headers = "";
+        String lines = "";
+        for (InvoiceHeader invoice : invoices) {
+            String invCSV = invoice.getAsCSV();
+            headers += invCSV;
+            headers += "\n";
 
+            for (InvoiceLine line : invoice.getLines()) {
+                String lineCSV = line.getAsCSV();
+                lines += lineCSV;
+                lines += "\n";
+            }
+        }
+        System.out.println("Check point");
+        try {
+            JFileChooser fc = new JFileChooser();
+            int result = fc.showSaveDialog(gui);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File headerFile = fc.getSelectedFile();
+                FileWriter hfw = new FileWriter(headerFile);
+                hfw.write(headers);
+                hfw.flush();
+                hfw.close();
+                result = fc.showSaveDialog(gui);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File lineFile = fc.getSelectedFile();
+                    FileWriter lfw = new FileWriter(lineFile);
+                    lfw.write(lines);
+                    lfw.flush();
+                    lfw.close();
+                }
+            }
+        } catch (Exception ex) {
+
+        }
     }
 
-  }
-
-  private void saveFile() {
- ArrayList<InvoiceHeader>invoiceHeaders = gui.getInvoices();
-        String invoiceheader1="";
-        String invoicelines="";
-        for (InvoiceHeader invoiceHeader :invoiceHeaders ){
-          String invcsv = invoiceHeader.getAsCSV();
-          invoiceheader1 += invcsv;
-          invoiceheader1 += "/n";
-          
-          
-         for (InvoiceLine invoiceLine : invoiceHeader.getLines()) {
-          String lineCSV = invoiceLine.getAsCSV();
-          invoicelines += lineCSV;
-          invoicelines += "\n";
-         } 
-          
+     
+    private void newInv() {
+        invoiceHeaderDialog = new InvoiceHeaderDialog(gui);
+        invoiceHeaderDialog.setVisible(true);
+   
+    }
+  
+    private void delInv() {
+        int selectedRow = gui.getHeaderTable().getSelectedRow();
+        if (selectedRow != -1) {
+            gui.getInvoices().remove(selectedRow);
+            gui.getInvoiceHeadersTableModel().fireTableDataChanged();
         }
-          System.out.println("Save Data Check");
-        try{
-         JFileChooser fc = new JFileChooser();
-         int result1 = fc.showSaveDialog(gui);
-         if (result1 == JFileChooser.APPROVE_OPTION){
-             File headerFile = fc.getSelectedFile();
-             FileWriter hfw = new FileWriter(headerFile);
-                    hfw.write(invoiceheader1);
-                    hfw.flush();
-                    hfw.close();
-             
-             result1 = fc.showSaveDialog(gui);
-             if (result1 == JFileChooser.APPROVE_OPTION){
-             File lineFile = fc.getSelectedFile();
-                 try (FileWriter lfw = new FileWriter(lineFile)) {
-      
-                     lfw.write(invoicelines);
-                     lfw.flush();
-                 }
-             }
-         }
-        } catch (HeadlessException | IOException ex){
-            
-        }
-        }    
+    }
 
-  private void Exit() {
-    System.exit(0);
-  }
-  private void createInvoiceHeaderCancel() {
+    private void newItem() {
+        invoiceLineDialog = new InvoiceLineDialog(gui);
+        invoiceLineDialog.setVisible(true); 
+    }
+
+    private void delItem() {
+         int selectedRow = gui.getLineTable().getSelectedRow();
+
+        if (selectedRow != -1) {
+            InvoiceLinesTableModel linesTableModel = (InvoiceLinesTableModel) gui.getLineTable().getModel();
+            linesTableModel.getLines().remove(selectedRow);
+            linesTableModel.fireTableDataChanged();
+            gui.getInvoiceHeadersTableModel().fireTableDataChanged();
+        } 
+    }
+    
+   
+
+    private void createInvoiceCancel() {
         invoiceHeaderDialog.setVisible(false);
         invoiceHeaderDialog.dispose();
-        invoiceHeaderDialog= null;
-        
+        invoiceHeaderDialog = null;
     }
-//  private void createInvoiceLineOK() {
-//    String invoice = InvoiceLineDialog.getNameField().getText();
-//    String CountStr = InvoiceLineDialog.getCountField().getText();
-//    String PriceStr = InvoiceLineDialog.getPriceField().getText();
-//     int count = Integer.parseInt(CountStr);
-//     double price = Double.parseDouble(PriceStr);
-//     int selectedInvoice = gui.getheaderTable().getSelectedRow();
-//     if (selectedInvoice != -1){
-//     InvoiceHeader invoiceHeader = gui.getInvoices().get(selectedInvoice);
-//     InvoiceLine invoiceLine = new InvoiceLine(invoice, price, count, invoiceHeader);
-//     invoiceHeader.getLines().add(invoiceLine);
-//     InvoiceLinesTableModel linesTableModel = (InvoiceLinesTableModel) gui.getInvoiceLinetable().getModel();
-//     linesTableModel.fireTableDataChanged();
-//
-//     gui.InvoiceHeadersTableModel().notifyAll();
-//     }
-//
-//
-//    invoiceLineDialog.setVisible(false);
-//     invoiceLineDialog.dispose();
-//     invoiceLineDialog = null;
-//    }
-//
-//
-//   private void createItemLineCancel() {
-//     invoiceLineDialog.setVisible(false);
-//     invoiceLineDialog.dispose();
-//     invoiceLineDialog = null;
-//    }
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+    private void createInvoiceOK() {
+        String date = invoiceHeaderDialog.getInvDateField().getText();
+        String customer = invoiceHeaderDialog.getCustNameField().getText();
+        int num = gui.getNextInvoiceNum();
 
+        InvoiceHeader invoice = new InvoiceHeader(num, date, customer);
+        gui.getInvoices().add(invoice);
+        gui.getInvoiceHeadersTableModel().fireTableDataChanged();
+        invoiceHeaderDialog.setVisible(false);
+        invoiceHeaderDialog.dispose();
+        invoiceHeaderDialog = null;
+    }
+
+    private void createLineOK() {
+        String item = invoiceLineDialog.getItemNameField().getText();
+        String countStr = invoiceLineDialog.getItemCountField().getText();
+        String priceStr = invoiceLineDialog.getItemPriceField().getText();
+        int count = Integer.parseInt(countStr);
+        double price = Double.parseDouble(priceStr);
+        int selectedInvoice = gui.getHeaderTable().getSelectedRow();
+        if (selectedInvoice != -1) {
+            InvoiceHeader invoice = gui.getInvoices().get(selectedInvoice);
+            InvoiceLine line = new InvoiceLine(item, price, count, invoice);
+            invoice.getLines().add(line);
+            InvoiceLinesTableModel linesTableModel = (InvoiceLinesTableModel) gui.getLineTable().getModel();
+            linesTableModel.fireTableDataChanged();
+            gui.getInvoiceHeadersTableModel().fireTableDataChanged();
+        }
+        invoiceLineDialog.setVisible(false);
+        invoiceLineDialog.dispose();
+        invoiceLineDialog = null;
+    }
+
+    private void createLineCancel() {
+        invoiceLineDialog.setVisible(false);
+        invoiceLineDialog.dispose();
+        invoiceLineDialog = null;
+    }
+
+     private void Exit() {
+            System.exit(0);
+
+    }
+  
+  
+  
   
 }

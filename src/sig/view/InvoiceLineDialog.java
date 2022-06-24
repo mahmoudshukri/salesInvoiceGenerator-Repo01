@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package sig.view;
 
 import java.awt.GridLayout;
@@ -6,63 +11,58 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+
 public class InvoiceLineDialog extends JDialog{
-    // declare dialog variables (adding labels and text fields)
-    private JTextField NameField;
-    private JLabel NameLabel;
-    private JTextField CountField;
-    private JLabel CountLabel;
-    private JTextField PriceField;
-    private JLabel PriceLabel;
-  // declare dialog button variables (adding buttons)
+    private JTextField itemNameField;
+    private JTextField itemCountField;
+    private JTextField itemPriceField;
+    private JLabel itemNameLbl;
+    private JLabel itemCountLbl;
+    private JLabel itemPriceLbl;
     private JButton okBtn;
     private JButton cancelBtn;
     
-    
-    
-        public InvoiceLineDialog(InvoiceGUI gui) {
-        NameField = new JTextField(25);
-        NameLabel = new JLabel("Name");
+    public InvoiceLineDialog(InvoiceGUI gui) {
+        itemNameField = new JTextField(25);
+        itemNameLbl = new JLabel("Item Name");
         
-        CountField = new JTextField(18);
-        CountLabel = new JLabel("Count");
+        itemCountField = new JTextField(25);
+        itemCountLbl = new JLabel("Item Count");
         
-        PriceField = new JTextField(20);
-        PriceLabel = new JLabel("Price");
+        itemPriceField = new JTextField(25);
+        itemPriceLbl = new JLabel("Item Price");
         
         okBtn = new JButton("OK");
         cancelBtn = new JButton("Cancel");
         
-        okBtn.setActionCommand("createItemLineOK");
-        cancelBtn.setActionCommand("createItemLineCancel");
+        okBtn.setActionCommand("createInvoiceLineOK");
+        cancelBtn.setActionCommand("createInvoiceLineCancel");
         
-        okBtn.addActionListener(gui.getActionHandler());
-        cancelBtn.addActionListener(gui.getActionHandler());
-        setLayout(new GridLayout(6, 4));
+        okBtn.addActionListener(gui.getHandler());
+        cancelBtn.addActionListener(gui.getHandler());
+        setLayout(new GridLayout(8, 4));
         
-        add(NameLabel);
-        add(NameField);
-        add(CountLabel);
-        add(CountField);
-        add(PriceLabel);
-        add(PriceField);
+        add(itemNameLbl);
+        add(itemNameField);
+        add(itemCountLbl);
+        add(itemCountField);
+        add(itemPriceLbl);
+        add(itemPriceField);
         add(okBtn);
         add(cancelBtn);
         
         pack();
     }
 
-    public  JTextField getNameField() {
-        return NameField;
+    public JTextField getItemNameField() {
+        return itemNameField;
     }
 
-    public  JTextField getCountField() {
-        return CountField;
+    public JTextField getItemCountField() {
+        return itemCountField;
     }
 
-    public  JTextField getPriceField() {
-        return PriceField;
+    public JTextField getItemPriceField() {
+        return itemPriceField;
     }
-
-   
 }

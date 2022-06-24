@@ -1,74 +1,40 @@
+
 package sig.model;
 
 public class InvoiceLine {
-    private InvoiceHeader invoice;
-    private String name;
+    private String item;
     private double price;
     private int count;
-   
-   
-    public InvoiceLine(InvoiceHeader invoice, String name, int count) {
-        this.invoice = invoice;
-        this.name = name;
+    private InvoiceHeader invoice;
+
+    public InvoiceLine() {
+    }
+
+    public InvoiceLine(String item, double price, int count, InvoiceHeader invoice) {
+        this.item = item;
+        this.price = price;
         this.count = count;
+        this.invoice = invoice;
     }
 
-//    public InvoiceLine(String item, double price, int Count, int invNum) {
-//    }
-
-    public InvoiceLine(String invoice, double name, double price, InvoiceHeader Count) {
+    public double getLineTotal() {
+        return price * count;
     }
-
-//    public InvoiceLine(String invoice, double price, int count, InvoiceHeader invoiceHeader) {
-//    }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public double getLineTotal(){
-       return price*count;
-   }
-    
-    
-    
-    
-    
-
     public int getCount() {
         return count;
-        
-        
-        
-        
-        
     }
 
     public void setCount(int count) {
         this.count = count;
     }
 
-    public InvoiceHeader getInvoice() {
-        return invoice;
+    public String getItem() {
+        return item;
     }
 
-    public void setInvoice(InvoiceHeader invoice) {
-        this.invoice = invoice;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setItem(String item) {
+        this.item = item;
     }
 
     public double getPrice() {
@@ -78,22 +44,18 @@ public class InvoiceLine {
     public void setPrice(double price) {
         this.price = price;
     }
-    
-    
 
-@Override
+    @Override
     public String toString() {
-        return "InvoiceLine{" + "Invoice Number=" + invoice.getNum() + ", Item Name" + name + ", Price=" + price + ", Count=" + count + '}';
+        return "Line{" + "num=" + invoice.getNum() + ", item=" + item + ", price=" + price + ", count=" + count + '}';
     }
 
-  //  public InvoiceHeader getInvoice() {
-  //      return invoice;
-  //  }
+    public InvoiceHeader getInvoice() {
+        return invoice;
+    }
     
-    
-  public String getAsCSV(){
-       return invoice.getNum() + "," + name + "," + price + "," + count;
-   }  
-    
+    public String getAsCSV() {
+        return invoice.getNum() + "," + item + "," + price + "," + count;
+    }
     
 }

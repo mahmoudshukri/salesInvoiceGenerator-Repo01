@@ -2,55 +2,35 @@
 package sig.model;
 
 import java.util.ArrayList;
-import java.util.Date;
-import sig.model.InvoiceLine;
 
 public class InvoiceHeader {
     private int num;
+    private String date;
     private String customer;
-    private Date date;
     private ArrayList<InvoiceLine> lines;
-
-    public InvoiceHeader(int num, String customer, Date date ) {
-        this.num = num;
-        this.customer = customer;
-        this.date = date;
-    }
-
-    public InvoiceHeader(int num, String date, String Customer) {
-    }
-
     
-    public double getInvoiceHeaderTotal(){
-        double total=0.0;
-        for(InvoiceLine invoiceline : getLines()){
-            total += invoiceline.getLineTotal();
+    public InvoiceHeader() {
+    }
+
+    public InvoiceHeader(int num, String date, String customer) {
+        this.num = num;
+        this.date = date;
+        this.customer = customer;
+    }
+
+    public double getInvoiceTotal() {
+        double total = 0.0;
+        for (InvoiceLine line : getLines()) {
+            total += line.getLineTotal();
         }
-        
         return total;
-        }
-
-
+    }
+    
     public ArrayList<InvoiceLine> getLines() {
-        if (lines == lines){
+        if (lines == null) {
             lines = new ArrayList<>();
         }
         return lines;
-    }
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
     }
 
     public String getCustomer() {
@@ -61,21 +41,29 @@ public class InvoiceHeader {
         this.customer = customer;
     }
 
-
-//    public void setLines (ArrayList<InvoiceLine> lines) {
-//        this.lines = lines;
-//    }
-    
-    
-    @Override
-    public String toString() {
-        return "InvoiceHeader{" + "Number=" + num + ", Date=" + date + ", Customer=" + customer + '}';
+    public int getNum() {
+        return num;
     }
 
-    
-    
+    public void setNum(int num) {
+        this.num = num;
+    }
 
-   public String getAsCSV(){
-       return num + "," + date + "," +customer;
-   }
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice{" + "num=" + num + ", date=" + date + ", customer=" + customer + '}';
+    }
+    
+    public String getAsCSV() {
+        return num + "," + date + "," + customer;
+    }
+    
 }
