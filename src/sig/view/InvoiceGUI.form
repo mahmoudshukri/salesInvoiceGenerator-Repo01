@@ -210,9 +210,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="New Invoice"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newInvBtnActionPerformed"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="newInvBtn.addActionListener(handler);"/>
       </AuxValues>

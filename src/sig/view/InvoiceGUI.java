@@ -74,11 +74,6 @@ public class InvoiceGUI extends javax.swing.JFrame {
         jScrollPane1.setViewportView(headerTable);
 
         newInvBtn.setText("New Invoice");
-        newInvBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newInvBtnActionPerformed(evt);
-            }
-        });
 
         delInvBtn.setText("Delete Invoice");
 
@@ -257,10 +252,6 @@ public class InvoiceGUI extends javax.swing.JFrame {
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
 
     }//GEN-LAST:event_ExitActionPerformed
-
-    private void newInvBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newInvBtnActionPerformed
-
-    }//GEN-LAST:event_newInvBtnActionPerformed
 
     private void saveMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuActionPerformed
 
